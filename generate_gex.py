@@ -141,10 +141,10 @@ def to_nq_terms(qqq_price_level, qqq_spot, nq_spot):
 
 def generate_pine_script(nq_spot, qqq_spot, expiry, levels_nq, generated_at):
     call_wall, put_wall, gamma_flip = levels_nq["call_wall"], levels_nq["put_wall"], levels_nq["gamma_flip"]
-    top_pos_lines = "\n".join(
+    top_pos_lines = "\n    ".join(
         f'array.push(topPosLevels, {lvl:.2f})' for lvl, _ in levels_nq["top_pos"]
     )
-    top_neg_lines = "\n".join(
+    top_neg_lines = "\n    ".join(
         f'array.push(topNegLevels, {lvl:.2f})' for lvl, _ in levels_nq["top_neg"]
     )
 
