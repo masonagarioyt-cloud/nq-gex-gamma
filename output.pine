@@ -1,0 +1,45 @@
+//@version=6
+indicator("NQ GEX Levels (Auto-Generated, Free Data Estimate)", overlay=true, max_lines_count=50)
+
+// ============================================================
+// AUTO-GENERATED — 2026-07-16 20:32 UTC
+// Source: QQQ options chain (free/unofficial), expiry 2026-07-16
+// QQQ spot at calc time: 705.94 | NQ spot at calc time: 29189.25
+// This is a FREE-DATA ESTIMATE using the standard public GEX
+// convention (dealers long calls / short puts). It is NOT
+// SpotGamma's or MenthorQ's proprietary model.
+// Paste this whole script over the old version each morning.
+// ============================================================
+
+callWall   = 30184.08
+putWall    = 29150.38
+gammaFlip  = 27258.62
+
+showTopLevels = input.bool(true, "Show Top Positive/Negative GEX Strikes")
+
+var topPosLevels = array.new_float(0)
+var topNegLevels = array.new_float(0)
+if barstate.isfirst
+    array.clear(topPosLevels)
+    array.clear(topNegLevels)
+    array.push(topPosLevels, 30184.08)
+array.push(topPosLevels, 28116.68)
+array.push(topPosLevels, 27703.20)
+    array.push(topNegLevels, 29150.38)
+array.push(topNegLevels, 29357.12)
+array.push(topNegLevels, 29563.86)
+
+plot(callWall, title="Call Wall", color=color.new(color.green, 0), linewidth=2, style=plot.style_line)
+plot(putWall, title="Put Wall", color=color.new(color.red, 0), linewidth=2, style=plot.style_line)
+plot(gammaFlip, title="Gamma Flip (Zero Gamma)", color=color.new(color.orange, 0), linewidth=2, style=plot.style_circles)
+
+if showTopLevels and barstate.islast
+    for i = 0 to array.size(topPosLevels) - 1
+        line.new(bar_index, array.get(topPosLevels, i), bar_index + 20, array.get(topPosLevels, i), color=color.new(color.green, 60), width=1, extend=extend.right)
+    for i = 0 to array.size(topNegLevels) - 1
+        line.new(bar_index, array.get(topNegLevels, i), bar_index + 20, array.get(topNegLevels, i), color=color.new(color.red, 60), width=1, extend=extend.right)
+
+var label infoLabel = na
+if barstate.islast
+    label.delete(infoLabel)
+    infoLabel := label.new(bar_index, gammaFlip, "Generated 2026-07-16 20:32 UTC\nQQQ->NQ estimate, expiry 2026-07-16", style=label.style_label_left, color=color.new(color.gray, 80), textcolor=color.white, size=size.small)
