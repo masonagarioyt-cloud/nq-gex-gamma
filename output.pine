@@ -2,18 +2,18 @@
 indicator("NQ GEX Levels (Auto-Generated, Free Data Estimate)", overlay=true, max_lines_count=50)
 
 // ============================================================
-// AUTO-GENERATED — 2026-07-16 20:32 UTC
+// AUTO-GENERATED — 2026-07-16 20:44 UTC
 // Source: QQQ options chain (free/unofficial), expiry 2026-07-16
-// QQQ spot at calc time: 705.94 | NQ spot at calc time: 29189.25
+// QQQ spot at calc time: 705.94 | NQ spot at calc time: 29172.75
 // This is a FREE-DATA ESTIMATE using the standard public GEX
 // convention (dealers long calls / short puts). It is NOT
 // SpotGamma's or MenthorQ's proprietary model.
 // Paste this whole script over the old version each morning.
 // ============================================================
 
-callWall   = 30184.08
-putWall    = 29150.38
-gammaFlip  = 27258.62
+callWall   = 28100.79
+putWall    = 29133.90
+gammaFlip  = 29172.75
 
 showTopLevels = input.bool(true, "Show Top Positive/Negative GEX Strikes")
 
@@ -22,12 +22,12 @@ var topNegLevels = array.new_float(0)
 if barstate.isfirst
     array.clear(topPosLevels)
     array.clear(topNegLevels)
-    array.push(topPosLevels, 30184.08)
-array.push(topPosLevels, 28116.68)
-array.push(topPosLevels, 27703.20)
-    array.push(topNegLevels, 29150.38)
-array.push(topNegLevels, 29357.12)
-array.push(topNegLevels, 29563.86)
+    array.push(topPosLevels, 28100.79)
+    array.push(topPosLevels, 27687.54)
+    array.push(topPosLevels, 30580.27)
+    array.push(topNegLevels, 29133.90)
+    array.push(topNegLevels, 29340.53)
+    array.push(topNegLevels, 29547.15)
 
 plot(callWall, title="Call Wall", color=color.new(color.green, 0), linewidth=2, style=plot.style_line)
 plot(putWall, title="Put Wall", color=color.new(color.red, 0), linewidth=2, style=plot.style_line)
@@ -42,4 +42,4 @@ if showTopLevels and barstate.islast
 var label infoLabel = na
 if barstate.islast
     label.delete(infoLabel)
-    infoLabel := label.new(bar_index, gammaFlip, "Generated 2026-07-16 20:32 UTC\nQQQ->NQ estimate, expiry 2026-07-16", style=label.style_label_left, color=color.new(color.gray, 80), textcolor=color.white, size=size.small)
+    infoLabel := label.new(bar_index, gammaFlip, "Generated 2026-07-16 20:44 UTC\nQQQ->NQ estimate, expiry 2026-07-16", style=label.style_label_left, color=color.new(color.gray, 80), textcolor=color.white, size=size.small)
