@@ -1,0 +1,36 @@
+name: Daily NQ GEX Update
+
+on:
+  schedule:
+    # 12:15 UTC = 8:15 AM ET (well before 9:30 AM market open, adjust for DST if needed)
+    - cron: "15 12 * * 1-5"
+  workflow_dispatch: {}   # lets you trigger it manually from the GitHub Actions tab too
+
+permissions:
+  contents: write
+
+jobs:
+  update-gex:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Generate fresh GEX levels + Pine script
+        run: python generate_gex.py
+
+      - name: Commit and push updated output.pine
+        run: |
+          git config user.name "gex-bot"
+          git config user.email "gex-bot@users.noreply.github.com"
+          git add output.pine
+          git diff --quiet --cached || git commit -m "Auto-update NQ GEX levels"
+          git push
